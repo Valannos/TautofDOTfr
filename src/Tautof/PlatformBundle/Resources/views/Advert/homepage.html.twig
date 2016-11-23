@@ -1,0 +1,72 @@
+{%extends "base.html.twig"%}
+
+{% block body %}
+    {{ parent() }}
+    <h2>You are currently logged as {{ app.user.username }}</h2>
+
+
+
+    <div class="well col-lg-6">
+        <form method="get" action = '{{ path('tautof_platform_index') }}' >
+            <fieldset>
+                <legend>Moteur de recherche</legend>
+                <select id="make" name = 'make'  >
+
+                    {% for make in allMakes %}
+                        <option value='{{make.id}}'
+                                {% if make.id == current_make_id %}
+                                    selected
+                                {% endif %} 
+
+                                >{{ make.name }}</option> 
+                    {% endfor %}
+
+                </select>
+                <select name = "model">
+                    {% if models %}
+                        <option value = "-1">Tous les modèles</option>
+                        {% for model in models %}
+                            <option value ="{{model.getId}}">{{model.getName}}</option>
+                        {% endfor %}
+
+                    {% endif %}
+
+
+                </select>
+                <select name = "color">
+
+
+                    <option value ="-1">Toutes les couleurs</option>
+                    {% for color in colors %}
+                        <option value="{{color.id}}">{{color.name}}</option>
+                    {% endfor %}
+
+                </select>
+
+
+                <button type='submit' class='btn btn-success'>OK</button>
+            </fieldset>
+
+
+        </form>
+
+        <a title="Ajouter une annonce" class="btn btn-warning" href="{{ path('tautof_platform_new') }}"><i class="fa fa-pencil-square" aria-hidden="true"></i>
+        </a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a title="Gérer les utilisateurs" class="btn btn-primary" href="{{ path('tautof_user_index') }}"><i class="fa fa-users" aria-hidden="true"></i></a>
+            {% endif %}
+    </div>
+
+
+    <script>
+        var make = document.getElementById('make');
+        make.onchange = function () {
+
+            location.href = "{{path('tautof_platform_homepage')}}/" + this.value;
+
+        }
+    </script>
+{% endblock %}
+
+
+

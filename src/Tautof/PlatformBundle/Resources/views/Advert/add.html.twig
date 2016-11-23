@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+{% block body %}
+
+    <div>
+        <p>Votre annonce N°{{ id }} intitulée "{{ title }}" a bien été enregistrée</p> 
+        <a class="btn btn-default" href = "{{ path('oc_platform_advert', {'name' : 'Admin', 'age' : 25}) }}" >
+            Back to index</a>
+
+
+    </div>
+
+{% endblock %}

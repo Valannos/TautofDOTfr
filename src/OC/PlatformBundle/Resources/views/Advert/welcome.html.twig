@@ -1,0 +1,11 @@
+{%extends "base.html.twig"%}
+{% block body %}
+    <h1>Bienvenue !! {{app.session.get('nickname')}}</h1>
+    {% for name in app.session %}
+        {{loop.index ~ "-" ~ name|upper }} <br/>
+    {% endfor %}
+
+{% endblock %}
+
+
+

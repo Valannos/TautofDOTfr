@@ -1,0 +1,24 @@
+Tautof_platform:
+    resource: "@TautofPlatformBundle/Resources/config/routing.yml"
+    prefix:   /
+
+tautof_user_index:
+    path: /user
+    defaults:
+        _controller: TautofUserBundle:User:index
+
+tautof_user_delete:
+    path: /user/delete/{user_id}
+    defaults:
+        _controller: TautofUserBundle:User:delete
+        user_id: -1
+login:
+    path: /login
+    defaults:
+        _controller: TautofUserBundle:Security:login
+        
+login_check:
+    path: /login_check
+    
+logout:
+    path: /logout

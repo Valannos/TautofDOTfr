@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ parent() }} - Users Manager
+{% endblock %}
+
+{% block body %}
+
+    <table class="table table-bordered">
+        <thead>
+
+            <tr class="text-center">
+                <th>User name</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>email</th>
+                <th>Delete User</th>
+                <th>Edit User</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr class="text-center">
+
+                    <td>{{user.getUsername}}</td>
+                    <td>{{user.getFirstname}}</td>
+                    <td>{{user.getName}}</td>
+                    <td>{{user.getEmail}}</td>
+                    <td><a href="{{ path('tautof_user_delete') }}/{{ user.getId }}" class="btn btn-danger"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
+                    <td><a href="" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+{% endblock %}

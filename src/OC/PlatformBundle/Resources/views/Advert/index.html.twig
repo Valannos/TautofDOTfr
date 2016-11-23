@@ -1,0 +1,31 @@
+{%extends "base.html.twig"%}
+{% block title%} {{parent()}} - Index {% endblock %}
+{% block body %}
+    {{parent()}}
+    <div class="well">
+        <table class="table table-bordered">
+            <thead>
+
+                <tr class="text-center">
+                    <th>Nom annonce</th>
+                    <th>Intitulé</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for advert in allAdvert %}
+                    <tr class="text-center">
+
+                        <td>{{advert.title}}</td>
+                        <td>{{advert.content}}</td>
+
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+{% endblock %}

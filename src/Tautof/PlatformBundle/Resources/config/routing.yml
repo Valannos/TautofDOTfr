@@ -1,0 +1,21 @@
+tautof_platform_index:
+    path: /index
+    defaults:
+        _controller: TautofPlatformBundle:Advert:index
+      
+tautof_platform_new:
+    path: /new
+    defaults: 
+        _controller: TautofPlatformBundle:Advert:new
+        
+tautof_platform_homepage:
+    path: /home/{make_id}
+    defaults:
+        _controller: TautofPlatformBundle:Advert:home
+        make_id : -1
+        
+tautof_platform_test:
+    path: /test/{id}
+    defaults:
+        _controller: TautofPlatformBundle:Advert:test
+        

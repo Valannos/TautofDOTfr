@@ -1,0 +1,4 @@
+services:
+#    tautof_user.example:
+#        class: Tautof\UserBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
