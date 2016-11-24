@@ -284,7 +284,7 @@ class Advert
     /**
      * Set user
      *
-     * @param \Tautof\PlatformBundle\Entity\User $user
+     * @param \Tautof\UserBundle\Entity\User $user
      *
      * @return Advert
      */
@@ -298,7 +298,7 @@ class Advert
     /**
      * Get user
      *
-     * @return \Tautof\PlatformBundle\Entity\User
+     * @return \Tautof\UserBundle\Entity\User
      */
     public function getUser()
     {

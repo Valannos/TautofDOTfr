@@ -22,3 +22,8 @@ login_check:
     
 logout:
     path: /logout
+
+registration:
+    path: /registrer
+    defaults:
+        _controller: TautofUserBundle:Registration:registrer

@@ -4,14 +4,17 @@ namespace Tautof\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * User
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="Tautof\UserBundle\Repository\UserRepository")
+ * @UniqueEntity(fields="username", message="username is already taken")
+ * @UniqueEntity(fields="email", message="a user is already registered with this email")
  */
-class User implements UserInterface {
+class User implements UserInterface, \Serializable {
 
     /**
      * @var integer
@@ -60,13 +63,6 @@ class User implements UserInterface {
     /**
      * @var string
      *
-     * @ORM\Column(name="salt", type="string", length=255)
-     */
-    private $salt;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="roles", type="array")
      */
     private $roles;
@@ -88,6 +84,15 @@ class User implements UserInterface {
      * @ORM\Column(name="password", type="string", length=255)
      */
     private $password;
+    private $plainPassword;
+
+    function getPlainPassword() {
+        return $this->plainPassword;
+    }
+
+    function setPlainPassword($plainPassword) {
+        $this->plainPassword = $plainPassword;
+    }
 
     public function eraseCredentials() {
         
@@ -224,24 +229,40 @@ class User implements UserInterface {
         return $this->username;
     }
 
-    function getSalt() {
-        return $this->salt;
-    }
-
     function getRoles() {
         return $this->roles;
+    }
+    public function getSalt()
+    {
+        // The bcrypt algorithm doesn't require a separate salt.
+        // You *may* need a real salt if you choose a different encoder.
+        return null;
     }
 
     function setUsername($username) {
         $this->username = $username;
     }
 
-    function setSalt($salt) {
-        $this->salt = $salt;
-    }
-
     function setRoles($roles) {
         $this->roles = $roles;
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize() {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized) {
+        list (
+                $this->id,
+                $this->username,
+                $this->password,
+                ) = unserialize($serialized);
     }
 
 }

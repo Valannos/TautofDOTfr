@@ -1,0 +1,5 @@
+{% if is_granted('ROLE_AUTEUR') %}
+    <footer>
+        <a class="btn btn-default" href="{{ path('tautof_platform_homepage') }}" title="back to homepage"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></a>
+    </footer>
+{% endif %}

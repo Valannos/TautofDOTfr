@@ -1,5 +1,5 @@
 {%extends "base.html.twig"%}
-{% block title %} {{parent()}} - Index {% endblock %}
+{% block title %} {{parent()}} - Annonces{% endblock %}
 {% block body %}
     {{parent()}}
     <div class="well">
@@ -30,5 +30,6 @@
 
         </table>
     </div>
-                
+   
+{% include 'back.html.twig' %}
 {% endblock %}
