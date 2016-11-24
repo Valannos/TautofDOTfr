@@ -15,6 +15,9 @@ use Tautof\PlatformBundle\Form\AdvertFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Tautof\PlatformBundle\Entity\Make;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class AdvertController extends Controller {
 
@@ -58,13 +61,13 @@ class AdvertController extends Controller {
             throw new AccessDeniedException('Accès limité aux auteurs');
         }
 
-         $advert = new Advert();
+        $advert = new Advert();
         $form = $this->createForm(AdvertFormType::class, $advert);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
-           
+
+
             $advert = $form->getData();
             $em = $this->getDoctrine()->getManager();
             $em->persist($advert);
@@ -96,9 +99,17 @@ class AdvertController extends Controller {
 
             $currentMake = $repo->find($make_id);
             $models = $em->getRepository('TautofPlatformBundle:Model')->findBy(array('make' => $currentMake));
-
-//            var_dump($model);
-            return $this->render('TautofPlatformBundle:Advert:homepage.html.twig', array('allMakes' => $allMakes, 'models' => $models, 'current_make_id' => $make_id, 'colors' => $allColors));
+            //JSON
+//            $normalizer = new ObjectNormalizer();
+//            $normalizer->setIgnoredAttributes(['make']);
+//            $serializer = new Serializer([$normalizer, [new JsonEncoder()] ]);
+//            $json = $serializer->serialize(array('models' => $models), 'json');
+//            $response = new Response('$json');
+//            $response->headers->set('Content-Type', 'application/json');
+//            return $response;
+            
+            //  var_dump($model);
+                 return $this->render('TautofPlatformBundle:Advert:homepage.html.twig', array('allMakes' => $allMakes, 'models' => $models, 'current_make_id' => $make_id, 'colors' => $allColors));
         }
     }
 

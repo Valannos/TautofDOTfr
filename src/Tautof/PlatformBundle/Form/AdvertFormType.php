@@ -12,6 +12,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Tautof\PlatformBundle\Form\MakeType;
 
 class AdvertFormType extends AbstractType {
 
@@ -25,8 +27,14 @@ class AdvertFormType extends AbstractType {
                 ->add('photo1')
                 ->add('photo2')
                 ->add('photo3')
-               // ->add('make')
                 ->add('model')
+              //  ->add('make', EntityType::Make)
+                ->add('make', EntityType::class, array(
+                    // query choices from this entity
+                    'class' => 'TautofPlatformBundle:Make',
+                    'mapped' => false,
+                    'choice_label' => 'name',
+                ))
         ;
     }
 
