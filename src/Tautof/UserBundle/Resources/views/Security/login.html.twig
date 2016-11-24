@@ -4,25 +4,33 @@
 
 
 {% block body %}
-    <div class="col-lg-6">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.message }}</div>
-        {% endif %}
+    <div class="container">
+        <div class="col-lg-6">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.message }}</div>
+            {% endif %}
 
 
 
-        <form class="well" action="{{ path('login_check') }}" method="post">
-            <fieldset>
-                <legend>Please, login...</legend>
-                <label for="username">Login : </label>
-                <input type="text" id="username" name="_username" value="{{last_username}}"/>
-                <br/>
-                <label for="password">Password : </label>
-                <input type="password" id="password" name="_password"/>
-                <br/>
-                <input class="btn btn-success" type="submit" value="Connexion"/>
-            </fieldset>
-        </form>
+            <form class="well" action="{{ path('login_check') }}" method="post">
+                <fieldset>
+                    <legend><h2>Please, login...</h2></legend>
+                    <label for="username">Login : </label>
+                    <input type="text" id="username" name="_username" value="{{last_username}}"/>
+                    <br/>
+                    <label for="password">Password : </label>
+                    <input type="password" id="password" name="_password"/>
+                    <br/>
+                    <input class="btn btn-success" type="submit" value="Connexion"/>
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="well col-lg-6">
+            <h2>...or registrer yourself</h2>     
+            <a class="btn btn-primary" href="{{ path('registration')}}">Formular <i class="fa fa-user-plus" aria-hidden="true"></i></a>
+        </div>
+
     </div>
 
      {% endblock %}

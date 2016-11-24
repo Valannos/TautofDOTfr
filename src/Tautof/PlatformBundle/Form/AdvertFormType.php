@@ -11,21 +11,22 @@ namespace Tautof\PlatformBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class AdvertFormType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
-        $builder->add('title')
-                ->add('description')
+        $builder->add('title', TextType::class)
+                ->add('description', TextType::class)
                 ->add('price')
                 ->add('color')
-                //->add('user')
                 ->add('km')
                 ->add('photo1')
                 ->add('photo2')
                 ->add('photo3')
-//                ->add('model')
+               // ->add('make')
+                ->add('model')
         ;
     }
 

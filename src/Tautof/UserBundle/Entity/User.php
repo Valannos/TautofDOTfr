@@ -5,6 +5,7 @@ namespace Tautof\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * User
@@ -27,14 +28,15 @@ class User implements UserInterface, \Serializable {
 
     /**
      * @var string
-     *
+     * NotBlanck()
      * @ORM\Column(name="name", type="string", length=255)
+     * 
      */
     private $name;
 
     /**
      * @var string
-     *
+     * NotBlanck()
      * @ORM\Column(name="firstname", type="string", length=255)
      */
     private $firstname;
@@ -232,8 +234,8 @@ class User implements UserInterface, \Serializable {
     function getRoles() {
         return $this->roles;
     }
-    public function getSalt()
-    {
+
+    public function getSalt() {
         // The bcrypt algorithm doesn't require a separate salt.
         // You *may* need a real salt if you choose a different encoder.
         return null;

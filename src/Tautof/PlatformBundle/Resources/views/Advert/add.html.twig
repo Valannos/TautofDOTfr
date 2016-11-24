@@ -1,12 +1,14 @@
 {% extends "base.html.twig" %}
 {% block body %}
+    {% if isPublished == true %}
+        <div>
+            <h1>Votre annonce a bien été enregistrée</h1> 
+            <a class="btn btn-default" href = "{{ path('tautof_platform_homepage') }}" >
+                Back to home</a>
 
-    <div>
-        <p>Votre annonce N°{{ id }} intitulée "{{ title }}" a bien été enregistrée</p> 
-        <a class="btn btn-default" href = "{{ path('oc_platform_advert', {'name' : 'Admin', 'age' : 25}) }}" >
-            Back to index</a>
 
+        </div>
+    {% endif %}
 
-    </div>
 
 {% endblock %}

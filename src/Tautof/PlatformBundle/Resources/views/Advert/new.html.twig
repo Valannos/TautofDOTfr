@@ -1,9 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    {% if isPublished %}
-        <p>Advert successfully added</p>
-    {% endif %}
+    
     <h1>New Advert</h1>
     {{ form_start(advertForm) }}    
     {{ form_widget(advertForm) }}
