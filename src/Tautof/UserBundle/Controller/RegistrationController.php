@@ -33,6 +33,7 @@ class RegistrationController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            $container = $this->container->get('mailer');
             
             return $this->render('TautofUserBundle:Security:login.html.twig');
             

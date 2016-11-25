@@ -1,4 +1,14 @@
 services:
+    TautofPlatform.antispam:
+        class: Tautof\PlatformBundle\Antispam\TautofAntispam
+        arguments:
+            - "@mailer"
+            - %locale%
+            - 50
 #    tautof_platform.example:
 #        class: Tautof\PlatformBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+
+
+

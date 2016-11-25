@@ -18,6 +18,7 @@ use Tautof\PlatformBundle\Entity\Make;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class AdvertController extends Controller {
 
@@ -65,10 +66,15 @@ class AdvertController extends Controller {
         $form = $this->createForm(AdvertFormType::class, $advert);
 
         $form->handleRequest($request);
+        $antispam = $this->container->get('TautofPlatform.antispam');
+
         if ($form->isSubmitted() && $form->isValid()) {
 
 
             $advert = $form->getData();
+            if ($antispam->isSpam($advert->getTitle())) {
+                throw new \Exception('Title is too short and has been assimilated as a spam');
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($advert);
             $em->flush();
@@ -80,6 +86,11 @@ class AdvertController extends Controller {
         return $this->render('TautofPlatformBundle:Advert:add.html.twig', array('isPublished' => $isPublished));
     }
 
+    /**
+     * @Security("has_role('ROLE_USER')")
+     * @param type $make_id
+     * @return type
+     */
     public function homeAction($make_id) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('TautofPlatformBundle:Make');
@@ -107,9 +118,8 @@ class AdvertController extends Controller {
 //            $response = new Response('$json');
 //            $response->headers->set('Content-Type', 'application/json');
 //            return $response;
-            
             //  var_dump($model);
-                 return $this->render('TautofPlatformBundle:Advert:homepage.html.twig', array('allMakes' => $allMakes, 'models' => $models, 'current_make_id' => $make_id, 'colors' => $allColors));
+            return $this->render('TautofPlatformBundle:Advert:homepage.html.twig', array('allMakes' => $allMakes, 'models' => $models, 'current_make_id' => $make_id, 'colors' => $allColors));
         }
     }
 
@@ -122,6 +132,20 @@ class AdvertController extends Controller {
         $adverts = $repository->getAdvertByMake($id);
 
         return $this->render('TautofPlatformBundle:Advert:index.html.twig', array('Advert' => $adverts));
+    }
+
+    public function sendMailAction() {
+        
+        $message = \Swift_Message::newInstance()
+                ->setSubject('Advert published')
+                ->setFrom('vladxill@gmail.com')
+                ->setTo('vanel.remi@gmail.com')
+                ->setBody('Your advert has been successfully published');
+        
+        $this->get('mailer')->send($message);
+        
+        return $this->redirectToRoute('tautof_platform_homepage');
+        
     }
 
 }

@@ -11,6 +11,14 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/vanel/tautofDOTfr/src/Tautof/UserBundle/Resources/views/Security/login.html.twig</file>
+            <file>file:/home/vanel/tautofDOTfr/src/Tautof/PlatformBundle/Resources/views/Advert/add.html.twig</file>
+            <file>file:/home/vanel/tautofDOTfr/src/Tautof/PlatformBundle/Resources/views/Advert/new.html.twig</file>
+            <file>file:/home/vanel/tautofDOTfr/src/Tautof/PlatformBundle/Controller/AdvertController.php</file>
+            <file>file:/home/vanel/tautofDOTfr/src/Tautof/PlatformBundle/Form/MakeType.php</file>
+            <file>file:/home/vanel/tautofDOTfr/src/Tautof/PlatformBundle/Resources/config/routing.yml</file>
+            <file>file:/home/vanel/tautofDOTfr/src/Tautof/PlatformBundle/Form/AdvertFormType.php</file>
+        </group>
     </open-files>
 </project-private>

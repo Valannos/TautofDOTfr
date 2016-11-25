@@ -19,3 +19,7 @@ tautof_platform_test:
     defaults:
         _controller: TautofPlatformBundle:Advert:test
         
+tautof_platform_sendAdvertSubmitConfirmation:
+    path: /new/success
+    defaults:
+        _controller: TautofPlatformBundle:Advert:sendMail
