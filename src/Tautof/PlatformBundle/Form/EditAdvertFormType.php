@@ -14,13 +14,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Tautof\PlatformBundle\Form\MakeType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class AdvertFormType extends AbstractType {
+class EditAdvertFormType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
-        $builder->add('title', TextType::class, array('label' => 'Advert full title'))
+        $builder->add('title', TextType::class)
                 ->add('description', TextType::class)
                 ->add('price')
                 ->add('color')

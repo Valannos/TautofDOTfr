@@ -3,8 +3,8 @@
 {% block body %}
     {{ parent() }}
     <h2>You are currently logged as {{ app.user.username }}</h2>
-    
-    
+
+
     <div class="container">
 
         <div class="well col-lg-6">
@@ -58,6 +58,9 @@
 
         </div>
         <div class="well col-lg-6">
+            {% if isEdited is defined and isEdited == true %}
+                <p>Advert successfully added</p>
+            {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                 <a title="Gérer les utilisateurs" class="btn btn-primary" href="{{ path('tautof_user_index') }}">Users <i class="fa fa-users" aria-hidden="true"></i></a>
                 {% endif %}
@@ -74,6 +77,7 @@
 
         }
     </script>
+
 {% endblock %}
 
 

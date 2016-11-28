@@ -21,5 +21,13 @@ class UserRepository extends EntityRepository {
         $em->remove($user);
         $em->flush();
     }
+    
+    public function getUserByName($name) {
+        
+       $user = $this->findOneBy(array('name' => $name));
+       return $user;
+        
+        
+    }
 
 }

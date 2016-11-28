@@ -3,6 +3,7 @@
 namespace Tautof\PlatformBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
+use Tautof\UserBundle\Repository\UserRepository;
 
 /**
  * AdvertRepository
@@ -39,6 +40,33 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository {
         $qb->innerJoin('a.model', 'mo');
         $qb->innerJoin('mo.make', 'ma');
         return $qb;
+    }
+
+    public function getAdvertByUser($user) {
+
+        $queryBuilder = $this->createQueryBuilder('a')
+                ->where('a.user = :user')
+                ->setParameter('user', $user);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function editAdvert($adv, $modAdv) {
+
+     
+        
+
+        $qd = $this->createQueryBuilder('a')
+                ->update()
+                ->set('a.title', ':title')
+                ->setParameter('title', $modAdv->getTitle())
+                ->set('a.model', ':model')
+                ->setParameter('model', $modAdv->getModel())
+                ->set('a.color',':color')
+                ->setParameter('color', $modAdv->getColor())
+                ->andWhere('a.id = :id')
+                ->setParameter('id', $adv);
+        return $qd->getQuery()->getResult();
     }
 
 }

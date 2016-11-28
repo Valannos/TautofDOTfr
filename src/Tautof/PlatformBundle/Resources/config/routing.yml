@@ -9,10 +9,11 @@ tautof_platform_new:
         _controller: TautofPlatformBundle:Advert:new
         
 tautof_platform_homepage:
-    path: /home/{make_id}
+    path: /home/{make_id}.{isEdited}
     defaults:
         _controller: TautofPlatformBundle:Advert:home
         make_id : -1
+        isEdited : false
         
 tautof_platform_test:
     path: /test/{id}
@@ -23,3 +24,9 @@ tautof_platform_sendAdvertSubmitConfirmation:
     path: /new/success
     defaults:
         _controller: TautofPlatformBundle:Advert:sendMail
+
+tautof_platoform_editAdvert:
+    path: /edit/{advert_id}
+    defaults:
+        _controller: TautofPlatformBundle:Advert:editAdvert
+        advert_id: -1

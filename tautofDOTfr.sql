@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Ven 25 Novembre 2016 à 11:24
+-- Généré le :  Lun 28 Novembre 2016 à 16:11
 -- Version du serveur :  5.7.16-0ubuntu0.16.04.1
 -- Version de PHP :  7.0.8-0ubuntu0.16.04.3
 
@@ -45,7 +45,8 @@ CREATE TABLE `advert` (
 --
 
 INSERT INTO `advert` (`id`, `title`, `description`, `price`, `km`, `photo1`, `photo2`, `photo3`, `user_id`, `color_id`, `model_id`) VALUES
-(4, 'Audi A3 - bon état', 'Audi A3 - bon état', 35000, 25000, NULL, NULL, NULL, NULL, 2, 8);
+(4, 'Audi A3  bon état', 'Audi A3  bon état', 35000, 25000, NULL, NULL, NULL, 9, 4, 8),
+(5, 'Audi A6 offre à saisir ouiiiii', 'Tombée du camion', 10000, 25000, NULL, NULL, NULL, 7, 5, 11);
 
 -- --------------------------------------------------------
 
@@ -1708,7 +1709,7 @@ ALTER TABLE `year`
 -- AUTO_INCREMENT pour la table `advert`
 --
 ALTER TABLE `advert`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `color`
 --

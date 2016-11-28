@@ -3,6 +3,7 @@
 namespace Tautof\PlatformBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Advert
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Advert
 {
     /**
-     * @var integer
+     * @var 
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -58,6 +59,7 @@ class Advert
 
     /**
      * @var string
+     * 
      *
      * @ORM\Column(name="photo2", type="string", length=255, nullable=true)
      */

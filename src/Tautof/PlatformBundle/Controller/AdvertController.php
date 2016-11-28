@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Tautof\PlatformBundle\Entity\Advert;
 use Tautof\PlatformBundle\Form\AdvertFormType;
+use Tautof\PlatformBundle\Form\EditAdvertFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Tautof\PlatformBundle\Entity\Make;
@@ -19,6 +20,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdvertController extends Controller {
 
@@ -76,6 +78,25 @@ class AdvertController extends Controller {
                 throw new \Exception('Title is too short and has been assimilated as a spam');
             }
             $em = $this->getDoctrine()->getManager();
+            /**
+             * @var Symfony\Component\HttpFoundation\File\UploadedFile $file1
+             */
+            $file1 = $advert->getPhoto1();
+            $file1Name = md5(uniqid()).'.'.$file1->guessExtension();
+            $file1->move($this->getParameter('images_directory'), $file1Name);
+            $advert->setPhoto1($file1Name);
+            
+            $file2 = $advert->getPhoto2();
+            $file2Name = md5(uniqid()).'.'.$file2->guessExtension();
+            $file2->move($this->getParameter('images_directory'), $file2Name);
+            $advert->setPhoto2($file2Name);
+            
+            $file3 = $advert->getPhoto3();
+            $file3Name = md5(uniqid()).'.'.$file3->guessExtension();
+            $file3->move($this->getParameter('images_directory'), $file3Name);
+            $advert->setPhoto1($file3Name);
+            
+            
             $em->persist($advert);
             $em->flush();
             $isPublished = true;
@@ -91,7 +112,7 @@ class AdvertController extends Controller {
      * @param type $make_id
      * @return type
      */
-    public function homeAction($make_id) {
+    public function homeAction($make_id, $isEdited) {
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository('TautofPlatformBundle:Make');
         $allMakes = $repo->findAll();
@@ -103,7 +124,7 @@ class AdvertController extends Controller {
 
             # ONLY MAKE #
 
-            return $this->render('TautofPlatformBundle:Advert:homepage.html.twig', array('allMakes' => $allMakes, 'models' => NULL, 'colors' => $allColors, 'current_make_id' => $make_id));
+            return $this->render('TautofPlatformBundle:Advert:homepage.html.twig', array('allMakes' => $allMakes, 'models' => NULL, 'colors' => $allColors, 'current_make_id' => $make_id, 'isEdited' => $isEdited));
         } else {
 
             # MODEL AND MAKE # 
@@ -119,7 +140,7 @@ class AdvertController extends Controller {
 //            $response->headers->set('Content-Type', 'application/json');
 //            return $response;
             //  var_dump($model);
-            return $this->render('TautofPlatformBundle:Advert:homepage.html.twig', array('allMakes' => $allMakes, 'models' => $models, 'current_make_id' => $make_id, 'colors' => $allColors));
+            return $this->render('TautofPlatformBundle:Advert:homepage.html.twig', array('allMakes' => $allMakes, 'models' => $models, 'current_make_id' => $make_id, 'colors' => $allColors, 'isEdited' => $isEdited));
         }
     }
 
@@ -135,17 +156,71 @@ class AdvertController extends Controller {
     }
 
     public function sendMailAction() {
-        
+
         $message = \Swift_Message::newInstance()
                 ->setSubject('Advert published')
                 ->setFrom('vladxill@gmail.com')
                 ->setTo('vanel.remi@gmail.com')
                 ->setBody('Your advert has been successfully published');
-        
+
         $this->get('mailer')->send($message);
-        
+
         return $this->redirectToRoute('tautof_platform_homepage');
-        
+    }
+
+    public function editAdvertAction(Request $req, $advert_id) {
+
+
+
+        $advert = new Advert();
+        $form = $this->createForm(EditAdvertFormType::class, $advert);
+        $form->handleRequest($req);
+
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /* A VALID FORMULAR HAS BEEN RECEIVED AND IS NOW HANDLED */
+            $repository = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Advert');
+           
+            $modAdvert = $form->getData();
+            $repository->editAdvert($advert_id, $modAdvert);
+            $isEdited = true;
+            return $this->redirectToRoute('tautof_platform_homepage', array('isEdited' => $isEdited));
+            
+        } else {
+
+            /* NO FILLED FORMULAR RECEIVED --- NEW ADVERT EDIT */
+
+            /* GET ADVERT FROM DATABASE */
+
+            $user = $this->getUser();
+            $repoAdvert = $this->getDoctrine()
+                    ->getManager()
+                    ->getRepository('TautofPlatformBundle:Advert');
+            $advert_to_edit = $repoAdvert->find($advert_id);
+
+            /* SET UP FORM */
+
+
+            $form = $this->createForm(EditAdvertFormType::class, $advert_to_edit);
+
+            $allMakes = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Make')->findAll();
+            $allModels = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Model')->findAll();
+            $allColors = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Color')->findAll();
+
+
+
+
+
+            return $this->render('TautofPlatformBundle:Advert:edit.html.twig', array(
+                        'editForm' => $form->createView(),
+                        'allModels' => $allModels,
+                        'allMakes' => $allMakes,
+                        'allColors' => $allColors,
+                            )
+            );
+        }
     }
 
 }

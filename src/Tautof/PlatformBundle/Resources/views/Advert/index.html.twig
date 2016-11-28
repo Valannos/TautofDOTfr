@@ -7,10 +7,14 @@
             <thead>
 
                 <tr class="text-center">
+                    <th>Photo</th>
                     <th>Nom annonce</th>
                     <th>Intitulé</th>
                     <th>Modèle</th>
                     <th>Marque</th>
+                    <th>Actions</th>
+                    <th>Auteur</th>
+                    <th>Couleur</th>
 
 
                 </tr>
@@ -18,18 +22,25 @@
             <tbody>
                 {% for advert in Advert %}
                     <tr class="text-center">
-
+                        <td><img src="{{ asset('uploads/images/'~advert.getPhoto1) }}" alt="{{ advert.title }}">
                         <td>{{advert.title}}</td>
                         <td>{{advert.description}}</td>
                         <td>{{advert.model}}</td>
                         <td>{{advert.model.make}}</td>
-
+                        
+                        {% if app.user == advert.user %}
+                            <td><a href="{{ path('tautof_platoform_editAdvert') }}/{{ advert.id }}" class="btn btn-warning">Edit</a></td>
+                        {% else %}
+                            <td><a href="" class="btn btn-primary">Make an offer</a></td>
+                        {% endif %}
+                        <td>{{ advert.user.getUsername }}</td>
+                        <td>{{ advert.getColor }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
 
         </table>
     </div>
-   
-{% include 'back.html.twig' %}
+
+    {% include 'back.html.twig' %}
 {% endblock %}
