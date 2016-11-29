@@ -2,13 +2,29 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    
-    <h1>New Advert</h1>
-    {{ form_start(advertForm) }}    
-    {{ form_widget(advertForm) }}
+    <div class="col-lg-5">
+        <h1>New Advert</h1>
+        {{ form_start(advertForm) }}    
+        {{ form_widget(advertForm) }}
 
-    <button type="submit" class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-success">Submit</button>
 
-    {{ form_end(advertForm) }}
-{% include 'back.html.twig' %}
+        {{ form_end(advertForm) }}
+        {% include 'back.html.twig' %}
+    </div>
+    <script>
+        var make = document.getElementById('advert_form_make');
+        make.onchange = function () {
+
+            location.href = "{{path('tautof_platform_new')}}/" + this.value;
+
+        }
+    </script>
+
+
+
 {% endblock %}
+
+
+
+

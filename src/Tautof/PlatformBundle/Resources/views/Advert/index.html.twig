@@ -2,6 +2,7 @@
 {% block title %} {{parent()}} - Annonces{% endblock %}
 {% block body %}
     {{parent()}}
+    
     <div class="well">
         <table class="table table-bordered">
             <thead>
@@ -22,16 +23,21 @@
             <tbody>
                 {% for advert in Advert %}
                     <tr class="text-center">
-                        <td><img src="{{ asset('uploads/images/'~advert.getPhoto1) }}" alt="{{ advert.title }}">
+                        <td><img src="{{ asset('uploads/images/'~advert.getPhoto1) }}" alt="{{ advert.title }}" height="100" weight="100">
                         <td>{{advert.title}}</td>
                         <td>{{advert.description}}</td>
                         <td>{{advert.model}}</td>
                         <td>{{advert.model.make}}</td>
                         
                         {% if app.user == advert.user %}
-                            <td><a href="{{ path('tautof_platoform_editAdvert') }}/{{ advert.id }}" class="btn btn-warning">Edit</a></td>
+                            <td>
+                                <a href="{{ path('tautof_platoform_editAdvert') }}/{{ advert.id }}" class="btn btn-warning">Edit</a>
+                                <a href="{{ path('tautof_platform_deleteAdvert') }}/{{ advert.id }}" class="btn btn-danger">Delete</a>
+                            
+                            </td>
+                            
                         {% else %}
-                            <td><a href="" class="btn btn-primary">Make an offer</a></td>
+                            <td><a href="contact" class="btn btn-primary">Make an offer</a></td>
                         {% endif %}
                         <td>{{ advert.user.getUsername }}</td>
                         <td>{{ advert.getColor }}</td>

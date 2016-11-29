@@ -24,9 +24,9 @@ class EditAdvertFormType extends AbstractType {
                 ->add('price')
                 ->add('color')
                 ->add('km')
-                ->add('photo1', FileType::class, array('label'=>'1st image'))
-                ->add('photo2', FileType::class, array('label'=>'2nd image'))
-                ->add('photo3', FileType::class, array('label'=>'3rd image'))
+//                ->add('photo1', FileType::class, array('label'=>'1st image'))
+//                ->add('photo2', FileType::class, array('label'=>'2nd image'))
+//                ->add('photo3', FileType::class, array('label'=>'3rd image'))
                 ->add('model')
               //  ->add('make', EntityType::Make)
                 ->add('make', EntityType::class, array(

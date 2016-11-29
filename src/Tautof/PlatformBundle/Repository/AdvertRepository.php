@@ -68,5 +68,7 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository {
                 ->setParameter('id', $adv);
         return $qd->getQuery()->getResult();
     }
+    
+
 
 }

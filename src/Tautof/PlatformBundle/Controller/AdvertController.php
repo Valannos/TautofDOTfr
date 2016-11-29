@@ -9,22 +9,23 @@
 namespace Tautof\PlatformBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Tautof\PlatformBundle\Entity\Advert;
 use Tautof\PlatformBundle\Form\AdvertFormType;
 use Tautof\PlatformBundle\Form\EditAdvertFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Tautof\PlatformBundle\Entity\Make;
+use Tautof\PlatformBundle\Entity\Model;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class AdvertController extends Controller {
 
-    public function indexAction(Request $req) {
+    public function indexAction(Request $req, $isDeleted) {
 
         #GETTING FIELDS FROM REQUEST#   
 
@@ -36,6 +37,11 @@ class AdvertController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
 //        $make = $em->getRepository('TautofPlatformBundle:Make')->find($make_id);
+        if ((!$make_id || $make_id == -1)) {
+
+            $adverts = $em->getRepository('TautofPlatformBundle:Advert')->findAll();
+            return $this->render('TautofPlatformBundle:Advert:index.html.twig', array('Advert' => $adverts, 'isDeleted' => $isDeleted));
+        }
 
 
         if (!$model_id || $model_id == -1) {
@@ -44,7 +50,7 @@ class AdvertController extends Controller {
             $adverts = $em->getRepository('TautofPlatformBundle:Advert')->getAdvertByMake($make_id);
 
             //findBy(array('model' => $models));
-            return $this->render('TautofPlatformBundle:Advert:index.html.twig', array('Advert' => $adverts));
+            return $this->render('TautofPlatformBundle:Advert:index.html.twig', array('Advert' => $adverts, 'isDeleted' => $isDeleted));
         } else {
 
             // $model = $em->getRepository('TautofPlatformBundle:Model')->find($model_id);
@@ -53,11 +59,11 @@ class AdvertController extends Controller {
 
             //->findBy(array('model' => $model));
 
-            return $this->render('TautofPlatformBundle:Advert:index.html.twig', array('Advert' => $adverts));
+            return $this->render('TautofPlatformBundle:Advert:index.html.twig', array('Advert' => $adverts, 'isDeleted' => $isDeleted));
         }
     }
 
-    public function newAction(Request $request) {
+    public function newAction(Request $request, $make_id) {
 
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_AUTEUR')) {
 
@@ -66,6 +72,32 @@ class AdvertController extends Controller {
 
         $advert = new Advert();
         $form = $this->createForm(AdvertFormType::class, $advert);
+
+        if ($make_id != -1) {
+
+
+            $make = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Make')->find($make_id);
+
+            $models = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Model')->findBy(array('make' => $make));
+            $form->add('model', EntityType::class, array(
+                        'choices' => $models,
+                        'class' => Model::class,
+                        'label' => 'name',
+                        'placeholder' => 'Choose a Model'
+                            )
+                    )
+                    ->add('make', EntityType::class, array(
+                        'class' => Make::class,
+                        'label' => 'name',
+                        //NECESSARY TO AVOID ERROR OF ACCESS TO 'MAKE' CLASS 
+                        'mapped' => false,
+                        //MAKE PREVISOUSLY OBTAINED FROM MAKE_ID IS LOADED IN MAKE FIELD                         
+                        'data' => $make
+                            )
+            );
+        }
+
+
 
         $form->handleRequest($request);
         $antispam = $this->container->get('TautofPlatform.antispam');
@@ -78,31 +110,30 @@ class AdvertController extends Controller {
                 throw new \Exception('Title is too short and has been assimilated as a spam');
             }
             $em = $this->getDoctrine()->getManager();
-            /**
-             * @var Symfony\Component\HttpFoundation\File\UploadedFile $file1
-             */
+
             $file1 = $advert->getPhoto1();
-            $file1Name = md5(uniqid()).'.'.$file1->guessExtension();
+            $file1Name = md5(uniqid()) . '.' . $file1->guessExtension();
             $file1->move($this->getParameter('images_directory'), $file1Name);
             $advert->setPhoto1($file1Name);
-            
+
             $file2 = $advert->getPhoto2();
-            $file2Name = md5(uniqid()).'.'.$file2->guessExtension();
+            $file2Name = md5(uniqid()) . '.' . $file2->guessExtension();
             $file2->move($this->getParameter('images_directory'), $file2Name);
             $advert->setPhoto2($file2Name);
-            
+
             $file3 = $advert->getPhoto3();
-            $file3Name = md5(uniqid()).'.'.$file3->guessExtension();
+            $file3Name = md5(uniqid()) . '.' . $file3->guessExtension();
             $file3->move($this->getParameter('images_directory'), $file3Name);
             $advert->setPhoto1($file3Name);
-            
-            
+
+            $advert->setUser($this->getUser());
+
+
             $em->persist($advert);
             $em->flush();
             $isPublished = true;
         } else {
             return $this->render('TautofPlatformBundle:Advert:new.html.twig', array('advertForm' => $form->createView()));
-            $isPublished = false;
         }
         return $this->render('TautofPlatformBundle:Advert:add.html.twig', array('isPublished' => $isPublished));
     }
@@ -182,12 +213,11 @@ class AdvertController extends Controller {
 
             /* A VALID FORMULAR HAS BEEN RECEIVED AND IS NOW HANDLED */
             $repository = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Advert');
-           
+
             $modAdvert = $form->getData();
             $repository->editAdvert($advert_id, $modAdvert);
             $isEdited = true;
             return $this->redirectToRoute('tautof_platform_homepage', array('isEdited' => $isEdited));
-            
         } else {
 
             /* NO FILLED FORMULAR RECEIVED --- NEW ADVERT EDIT */
@@ -221,6 +251,19 @@ class AdvertController extends Controller {
                             )
             );
         }
+    }
+
+    public function deleteAction($advert_id) {
+
+        $repository = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Advert');
+        $advert = $repository->find($advert_id);
+        $this->getDoctrine()->getManager()->remove($advert);
+        $this->getDoctrine()->getManager()->flush();
+
+        $allAdverts = $repository->findAll();
+        $isDeleted = true;
+
+        return $this->redirectToRoute('tautof_platform_homepage', array('isDeleted' => $isDeleted));
     }
 
 }

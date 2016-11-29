@@ -1,12 +1,14 @@
 tautof_platform_index:
-    path: /index
+    path: /index/{isDeleted}
     defaults:
         _controller: TautofPlatformBundle:Advert:index
+        isDeleted: false
       
 tautof_platform_new:
-    path: /new
+    path: /new/{make_id}
     defaults: 
         _controller: TautofPlatformBundle:Advert:new
+        make_id: -1
         
 tautof_platform_homepage:
     path: /home/{make_id}.{isEdited}
@@ -29,4 +31,10 @@ tautof_platoform_editAdvert:
     path: /edit/{advert_id}
     defaults:
         _controller: TautofPlatformBundle:Advert:editAdvert
+        advert_id: -1
+        
+tautof_platform_deleteAdvert:
+    path: /deleteAdvert/{advert_id}
+    defaults:
+        _controller: TautofPlatformBundle:Advert:delete
         advert_id: -1

@@ -12,7 +12,7 @@
                 <fieldset>
                     <legend>Moteur de recherche</legend>
                     <select id="make" name = 'make'  >
-
+                        <option value="-1">Toutes marques</option>
                         {% for make in allMakes %}
                             <option value='{{make.id}}'
                                     {% if make.id == current_make_id %}
@@ -60,6 +60,11 @@
         <div class="well col-lg-6">
             {% if isEdited is defined and isEdited == true %}
                 <p>Advert successfully added</p>
+            {% endif %}
+            {% if isDeleted is defined and isDeleted == true %}
+
+                <h3>Advert successfully deleted !</h3> 
+
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
                 <a title="Gérer les utilisateurs" class="btn btn-primary" href="{{ path('tautof_user_index') }}">Users <i class="fa fa-users" aria-hidden="true"></i></a>
