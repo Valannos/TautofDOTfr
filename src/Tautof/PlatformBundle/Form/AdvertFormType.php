@@ -22,39 +22,31 @@ class AdvertFormType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
-//        $modelRepo = $options['em']->getRepository('TautofPlatformBundle:Model');
 //        
-//        $formModifier = function (FormInterface $form, $make) use($modelRepo) {
-//
-//            if ($make === null) {
-//                $models = array();
-//            } else {
-//                $models = $modelRepo->findBy(array('make' => $make));
-//            }
-//
-//
-//            $form->add('model', EntityType::class, array(
-//                'class' => 'TautofPlatformBundle:Model',
-//                'placeholder' => '',
-//                'choices' => $models
-//            ));
-//        };
 
         $builder->add('title', TextType::class, array('label' => 'Advert full title'))
                 ->add('description', TextType::class)
                 ->add('price')
                 ->add('color')
                 ->add('km')
-                ->add('photo1', FileType::class, array('label' => '1st image'))
-                ->add('photo2', FileType::class, array('label' => '2nd image'))
-                ->add('photo3', FileType::class, array('label' => '3rd image'))
-             //   ->add('model')
+                ->add('photo1', FileType::class, array(
+                    'label' => '1st image',
+                    'required' => false
+                ))
+                ->add('photo2', FileType::class, array(
+                    'label' => '2nd image',
+                    'required' => false
+                ))
+                ->add('photo3', FileType::class, array(
+                    'label' => '3rd image',
+                    'required' => false
+                ))
                 ->add('make', EntityType::class, array(
-// query choices from this entity
                     'class' => 'TautofPlatformBundle:Make',
                     'mapped' => false,
                     'choice_label' => 'name',
-                    'placeholder' => 'Choose a make'
+                    'placeholder' => 'Choose a make',
+                    'label' => 'Makes list',
                 ))
         ;
 

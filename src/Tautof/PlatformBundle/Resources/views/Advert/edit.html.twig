@@ -2,15 +2,32 @@
 
 
 {% block body %}
-    
 
 
-  <h1>Edit</h1>
-    {{ form_start(editForm) }}    
-    {{ form_widget(editForm) }}
+    <div class="container">
+        <div class="row">
+            <div class="well col-lg-6 ">
+                <h1>Edit</h1>
+                {{ form_start(editForm) }}    
+                {{ form_widget(editForm) }}
 
-    <button type="submit" class="btn btn-success">Valid edit</button>
+                <button type="submit" class="btn btn-success">Valid edit</button>
+                {% include 'back.html.twig' %}
 
-    {{ form_end(editForm) }}
+                {{ form_end(editForm) }}
+            </div>
+        </div>
+        {% for photo in photos %}
+            {% if photo != null %}
+                <div class="row">
 
-    {% endblock %}
+                    <img src ="{{asset('uploads/images/'~ photo)}}" alt="Photo1">
+                    <a href="" class="btn btn-warning">Delete photo</a>
+
+                </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+
+{% endblock %}

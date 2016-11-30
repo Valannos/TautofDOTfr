@@ -28,7 +28,7 @@ class EditAdvertFormType extends AbstractType {
 //                ->add('photo2', FileType::class, array('label'=>'2nd image'))
 //                ->add('photo3', FileType::class, array('label'=>'3rd image'))
                 ->add('model')
-              //  ->add('make', EntityType::Make)
+                //  ->add('make', EntityType::Make)
                 ->add('make', EntityType::class, array(
                     // query choices from this entity
                     'class' => 'TautofPlatformBundle:Make',

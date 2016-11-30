@@ -82,13 +82,13 @@ class AdvertController extends Controller {
             $form->add('model', EntityType::class, array(
                         'choices' => $models,
                         'class' => Model::class,
-                        'label' => 'name',
+                        'label' => 'Model',
                         'placeholder' => 'Choose a Model'
                             )
                     )
                     ->add('make', EntityType::class, array(
                         'class' => Make::class,
-                        'label' => 'name',
+                        'label' => 'Make',
                         //NECESSARY TO AVOID ERROR OF ACCESS TO 'MAKE' CLASS 
                         'mapped' => false,
                         //MAKE PREVISOUSLY OBTAINED FROM MAKE_ID IS LOADED IN MAKE FIELD                         
@@ -238,16 +238,15 @@ class AdvertController extends Controller {
             $allMakes = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Make')->findAll();
             $allModels = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Model')->findAll();
             $allColors = $this->getDoctrine()->getManager()->getRepository('TautofPlatformBundle:Color')->findAll();
+            $photos = [];
 
-
-
-
-
+            array_push($photos, $advert_to_edit->getPhoto1(), $advert_to_edit->getPhoto2(), $advert_to_edit->getPhoto3());
             return $this->render('TautofPlatformBundle:Advert:edit.html.twig', array(
                         'editForm' => $form->createView(),
                         'allModels' => $allModels,
                         'allMakes' => $allMakes,
                         'allColors' => $allColors,
+                        'photos' => $photos
                             )
             );
         }
